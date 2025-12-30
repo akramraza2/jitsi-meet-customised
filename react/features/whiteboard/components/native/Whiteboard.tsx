@@ -127,11 +127,17 @@ class Whiteboard extends PureComponent<IProps> {
             collabServerUrl,
             collabDetails,
             localParticipantName
+        );
+
+        const finalUri = uri?.replace(
+            /#state=([^&]+)/,
+            (_, encodedState) => {
+                const decoded = JSON.parse(atob(encodedState));
+                decoded.readonly = !isModerator;
+                const reEncoded = btoa(JSON.stringify(decoded));
+                return `#state=${reEncoded}`;
+            }
         ) ?? '';
-
-        const separator = uri.includes('?') ? '&' : '?';
-        const finalUri = `${uri}${separator}readonly=${!isModerator}`;
-
 
         return (
             <JitsiScreen
