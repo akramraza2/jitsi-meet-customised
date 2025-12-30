@@ -13,7 +13,8 @@ const WhiteboardWrapper = ({
     className,
     collabDetails,
     collabServerUrl,
-    localParticipantName
+    localParticipantName,
+    readonly
 }: {
     className?: string;
     collabDetails: {
@@ -22,6 +23,7 @@ const WhiteboardWrapper = ({
     };
     collabServerUrl: string;
     localParticipantName: string;
+    readonly: boolean;
 }) => {
     const excalidrawRef = useRef<any>(null);
     const excalidrawAPIRef = useRef<any>(null);
@@ -44,11 +46,18 @@ const WhiteboardWrapper = ({
 
     return (
         <div className = { className }>
+            {readonly && (
+            <div className="whiteboard-readonly-banner">
+                View only – mode for students
+            </div>
+         )}
+
             <div className = 'excalidraw-wrapper'>
                 <ExcalidrawApp
                     collabDetails = { collabDetails }
                     collabServerUrl = { collabServerUrl }
                     detectScroll = { true }
+                    readOnly = { readonly }
                     excalidraw = {{
                         isCollaborating: true,
                         langCode: i18next.language,
@@ -56,7 +65,16 @@ const WhiteboardWrapper = ({
                         // @ts-ignore
                         ref: excalidrawRef,
                         theme: 'light',
-                        UIOptions: WHITEBOARD_UI_OPTIONS
+                        UIOptions: readonly
+                            ? {
+                                ...WHITEBOARD_UI_OPTIONS,
+                                canvasActions: {
+                                    clearCanvas: false,
+                                    export: false,
+                                    saveAsImage: false
+                                }
+                            }
+                            : WHITEBOARD_UI_OPTIONS
                     }}
                     getCollabAPI = { getCollabAPI }
                     getExcalidrawAPI = { getExcalidrawAPI } />

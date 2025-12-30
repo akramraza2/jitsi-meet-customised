@@ -26,6 +26,7 @@ import logger from '../../logger';
 
 import WhiteboardErrorDialog from './WhiteboardErrorDialog';
 import styles, { INDICATOR_COLOR } from './styles';
+import { isLocalParticipantModerator } from '../../../base/participants/functions';
 
 interface IProps extends WithTranslation {
 
@@ -43,6 +44,11 @@ interface IProps extends WithTranslation {
      * Window location href.
      */
     locationHref: string;
+
+    /**
+     * Local Participant Moderator.
+     */
+    isModerator: boolean;
 
     /**
      * Default prop for navigating between screen components(React Navigation).
@@ -112,7 +118,7 @@ class Whiteboard extends PureComponent<IProps> {
      * @inheritdoc
      */
     override render() {
-        const { locationHref, route } = this.props;
+        const { locationHref, route, isModerator } = this.props;
         const collabServerUrl = safeDecodeURIComponent(route.params?.collabServerUrl);
         const localParticipantName = safeDecodeURIComponent(route.params?.localParticipantName);
         const collabDetails = route.params?.collabDetails;
@@ -122,6 +128,8 @@ class Whiteboard extends PureComponent<IProps> {
             collabDetails,
             localParticipantName
         ) ?? '';
+
+        const finalUri = `${uri}&readonly=${!isModerator}`;
 
         return (
             <JitsiScreen
@@ -138,7 +146,8 @@ class Whiteboard extends PureComponent<IProps> {
                     renderLoading = { this._renderLoading }
                     scrollEnabled = { true }
                     setSupportMultipleWindows = { false }
-                    source = {{ uri }}
+                    // source = {{ uri }}
+                    source={{ uri: finalUri }}
                     startInLoadingState = { true }
                     style = { styles.webView }
                     webviewDebuggingEnabled = { true } />
@@ -240,7 +249,8 @@ function mapStateToProps(state: IReduxState) {
 
     return {
         conference: getCurrentConference(state),
-        locationHref: href
+        locationHref: href,
+        isModerator: isLocalParticipantModerator(state)
     };
 }
 

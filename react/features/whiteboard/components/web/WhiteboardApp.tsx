@@ -26,6 +26,10 @@ export default class WhiteboardApp extends BaseApp<any> {
     override async componentDidMount() {
         await super.componentDidMount();
 
+        const url = window.location.href;
+        const params = new URL(url).searchParams;
+        const isReadOnly = params.get('readonly') === 'true';
+
         const { state } = parseURLParams(window.location.href, true);
         const decodedState = JSON.parse(decodeFromBase64URL(state));
         const { collabServerUrl, localParticipantName } = decodedState;
@@ -62,7 +66,9 @@ export default class WhiteboardApp extends BaseApp<any> {
                                 roomKey
                             }}
                             collabServerUrl = { safeDecodeURIComponent(collabServerUrl) }
-                            localParticipantName = { localParticipantName } />
+                            localParticipantName = { localParticipantName }
+                            readonly = { isReadOnly }/>
+
                         : <NoWhiteboardError className = 'whiteboard' />
                 }</>
             ) });
