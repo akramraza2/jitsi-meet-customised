@@ -1141,7 +1141,7 @@
         "saveLocalRecording": "Save recording file locally (Beta)",
         "serviceDescription": "Your recording will be saved by the recording service",
         "serviceDescriptionCloud": "Cloud recording",
-        "serviceDescriptionCloudInfo": "Recorded meetings are automatically cleared 24h after their recording time.",
+        "serviceDescriptionCloudInfo": "Recorded classrooms are automatically cleared 24h after their recording time.",
         "serviceName": "Recording service",
         "sessionAlreadyActive": "This session is already being recorded or live streamed.",
         "showAdvancedOptions": "Advanced options",
