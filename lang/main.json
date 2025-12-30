@@ -1648,15 +1648,15 @@
         "go": "GO",
         "goSmall": "GO",
         "headerSubtitle": "Live Islamic Classes",
-        "headerTitle": "Mobile App",
+        "headerTitle": "Mobile app",
         "info": "Dial-in info",
-        "jitsiOnMobile": "Mobile App on mobile – download our app and learn Islamic education from anywhere",
+        "jitsiOnMobile": "Mobile app on mobile – download our app and learn Islamic education from anywhere",
         "join": "CREATE / JOIN",
         "logo": {
             "calendar": "Calendar logo",
             "desktopPreviewThumbnail": "Desktop preview thumbnail",
             "googleLogo": "Google Logo",
-            "logoDeepLinking": "Mobile App logo",
+            "logoDeepLinking": "Mobile app logo",
             "microsoftLogo": "Microsoft logo",
             "policyLogo": "Policy logo"
         },
