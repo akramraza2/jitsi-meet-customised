@@ -29,12 +29,26 @@ const WhiteboardWrapper = ({
     const excalidrawAPIRef = useRef<any>(null);
     const collabAPIRef = useRef<any>(null);
 
-    const getExcalidrawAPI = useCallback(excalidrawAPI => {
+    const getExcalidrawAPI = useCallback(api => {
         if (excalidrawAPIRef.current) {
             return;
         }
-        excalidrawAPIRef.current = excalidrawAPI;
-    }, []);
+
+        excalidrawAPIRef.current = api;
+
+        if (readonly) {
+            api.updateScene({
+                appState: {
+                    isLoading: false,
+                    selectedElementIds: {},
+                    editingElement: null
+                }
+            });
+
+            api.setActiveTool({ type: 'selection' });
+        }
+    }, [ readonly ]);
+
 
     const getCollabAPI = useCallback(collabAPI => {
         if (collabAPIRef.current) {
@@ -57,7 +71,6 @@ const WhiteboardWrapper = ({
                     collabDetails = { collabDetails }
                     collabServerUrl = { collabServerUrl }
                     detectScroll = { true }
-                    readOnly = { readonly }
                     excalidraw = {{
                         isCollaborating: true,
                         langCode: i18next.language,

@@ -129,7 +129,9 @@ class Whiteboard extends PureComponent<IProps> {
             localParticipantName
         ) ?? '';
 
-        const finalUri = `${uri}&readonly=${!isModerator}`;
+        const separator = uri.includes('?') ? '&' : '?';
+        const finalUri = `${uri}${separator}readonly=${!isModerator}`;
+
 
         return (
             <JitsiScreen
