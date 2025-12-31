@@ -26,6 +26,7 @@ const WhiteboardWrapper = ({
     localParticipantName: string;
     readonly: boolean;
 }) => {
+    console.log('[WhiteboardWrapper] readonly =', readonly);
     const excalidrawRef = useRef<any>(null);
     const excalidrawAPIRef = useRef<any>(null);
     const collabAPIRef = useRef<any>(null);
