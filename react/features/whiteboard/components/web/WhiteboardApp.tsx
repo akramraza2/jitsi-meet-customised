@@ -28,6 +28,7 @@ export default class WhiteboardApp extends BaseApp<any> {
 
         const { state } = parseURLParams(window.location.href, true);
         const decodedState = JSON.parse(decodeFromBase64URL(state));
+        console.log('WHITEBOARD decodedState:', decodedState);
         const { collabServerUrl, localParticipantName,readonly: isReadOnly = false } = decodedState;
         let { roomId, roomKey } = decodedState;
 

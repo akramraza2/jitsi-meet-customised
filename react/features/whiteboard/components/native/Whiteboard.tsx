@@ -122,48 +122,58 @@ class Whiteboard extends PureComponent<IProps> {
      */
     override render() {
         const { locationHref, route, isModerator } = this.props;
+
         const collabServerUrl = safeDecodeURIComponent(route.params?.collabServerUrl);
         const localParticipantName = safeDecodeURIComponent(route.params?.localParticipantName);
         const collabDetails = route.params?.collabDetails;
-        const uri = getWhiteboardInfoForURIString(
+
+        const baseUri = getWhiteboardInfoForURIString(
             locationHref,
             collabServerUrl,
             collabDetails,
             localParticipantName
         );
 
-        const finalUri = uri?.replace(
-            /#state=([^&]+)/,
-            (_, encodedState) => {
-                const decoded = JSON.parse(decodeFromBase64URL(encodedState));
-                decoded.readonly = !isModerator;
-                return `#state=${encodeToBase64URL(JSON.stringify(decoded))}`;
-            }
-        ) ?? '';
+        if (!baseUri) {
+            return null;
+        }
+
+        const hashIndex = baseUri.indexOf('#state=');
+
+        let finalUri = baseUri;
+
+        if (hashIndex !== -1) {
+            const encodedState = baseUri.substring(hashIndex + 7); // after "#state="
+            const decodedState = JSON.parse(decodeFromBase64URL(encodedState));
+
+            decodedState.readonly = !isModerator;
+
+            finalUri =
+                baseUri.substring(0, hashIndex) +
+                '#state=' +
+                encodeToBase64URL(JSON.stringify(decodedState));
+        }
 
         return (
             <JitsiScreen
-                safeAreaInsets = { [ 'bottom', 'left', 'right' ] }
-                style = { styles.backDrop }>
+                safeAreaInsets={[ 'bottom', 'left', 'right' ]}
+                style={styles.backDrop}>
                 <WebView
-                    domStorageEnabled = { false }
-                    incognito = { true }
-                    javaScriptEnabled = { true }
-                    nestedScrollEnabled = { true }
-                    onError = { this._onError }
-                    onMessage = { this._onMessage }
-                    onShouldStartLoadWithRequest = { this._onNavigate }
-                    renderLoading = { this._renderLoading }
-                    scrollEnabled = { true }
-                    setSupportMultipleWindows = { false }
-                    // source = {{ uri }}
                     source={{ uri: finalUri }}
-                    startInLoadingState = { true }
-                    style = { styles.webView }
-                    webviewDebuggingEnabled = { true } />
+                    javaScriptEnabled
+                    incognito
+                    domStorageEnabled={false}
+                    onMessage={this._onMessage}
+                    onError={this._onError}
+                    onShouldStartLoadWithRequest={this._onNavigate}
+                    startInLoadingState
+                    renderLoading={this._renderLoading}
+                    style={styles.webView}
+                />
             </JitsiScreen>
         );
     }
+
 
     /**
      * Callback to handle the error if the page fails to load.
