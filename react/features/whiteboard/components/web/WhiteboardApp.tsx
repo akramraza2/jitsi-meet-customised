@@ -26,13 +26,9 @@ export default class WhiteboardApp extends BaseApp<any> {
     override async componentDidMount() {
         await super.componentDidMount();
 
-        const url = new URL(window.location.href);
-         console.log('WHITEBOARDAPP url:', url);
-        const isReadOnly = url.searchParams.get('readonly') === 'true';
-        console.log('WHITEBOARDAPP ReadOnly:', isReadOnly);
         const { state } = parseURLParams(window.location.href, true);
         const decodedState = JSON.parse(decodeFromBase64URL(state));
-        const { collabServerUrl, localParticipantName} = decodedState;
+        const { collabServerUrl, localParticipantName,isReadOnly = false} = decodedState;
         let { roomId, roomKey } = decodedState;
 
         if (!roomId && !roomKey) {

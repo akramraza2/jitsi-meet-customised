@@ -132,9 +132,18 @@ class Whiteboard extends PureComponent<IProps> {
             localParticipantName
         );
 
-        const finalUri = uri
-            ? `${uri}${uri.includes('?') ? '&' : '?'}readonly=${!isModerator}`
-            : '';
+        const finalUri = uri?.replace(
+            /#state=([^&]+)/,
+            (_, encodedState) => {
+                const decoded = JSON.parse(decodeFromBase64URL(encodedState));
+
+                return `#state=${encodeToBase64URL(JSON.stringify({
+                    ...decoded,
+                    readonly: !isModerator
+                }))}`;
+            }
+        ) ?? '';
+
 
 
         return (
