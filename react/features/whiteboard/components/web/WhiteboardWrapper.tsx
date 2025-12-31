@@ -30,34 +30,38 @@ const WhiteboardWrapper = ({
     const excalidrawAPIRef = useRef<any>(null);
     const collabAPIRef = useRef<any>(null);
 
-    const getExcalidrawAPI = useCallback(api => {
+    const getExcalidrawAPI = useCallback(excalidrawAPI => {
         if (excalidrawAPIRef.current) {
             return;
         }
-
-        excalidrawAPIRef.current = api;
-
-        if (readonly) {
-            api.updateScene({
-                appState: {
-                    isLoading: false,
-                    selectedElementIds: {},
-                    editingElement: null
-                }
-            });
-
-            api.setActiveTool({ type: 'selection' });
-        }
-    }, [ readonly ]);
+        excalidrawAPIRef.current = excalidrawAPI;
+    }, []);
 
 
     const getCollabAPI = useCallback(collabAPI => {
         if (collabAPIRef.current) {
             return;
         }
+
         collabAPIRef.current = collabAPI;
         collabAPIRef.current.setUsername(localParticipantName);
-    }, [ localParticipantName ]);
+
+        if (readonly && excalidrawAPIRef.current) {
+            // Delay ensures collab sync finished
+            setTimeout(() => {
+                excalidrawAPIRef.current.updateScene({
+                    appState: {
+                        viewModeEnabled: true,
+                        zenModeEnabled: true,
+                        gridSize: null
+                    }
+                });
+
+                excalidrawAPIRef.current.setActiveTool({ type: 'selection' });
+            }, 0);
+        }
+    }, [readonly, localParticipantName]);
+
 
     return (
         //<div className = { className }>

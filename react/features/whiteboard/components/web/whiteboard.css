@@ -6,3 +6,16 @@
 .whiteboard.readonly {
     touch-action: pan-x pan-y;
 }
+
+.whiteboard-readonly-banner {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.75);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    z-index: 1000;
+}
