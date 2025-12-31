@@ -30,22 +30,12 @@ const WhiteboardWrapper = ({
     const excalidrawAPIRef = useRef<any>(null);
     const collabAPIRef = useRef<any>(null);
 
-    const getExcalidrawAPI = useCallback(api => {
-        excalidrawAPIRef.current = api;
-
-        if (readonly) {
-            setTimeout(() => {
-                api.updateScene({
-                    appState: {
-                        viewModeEnabled: true,
-                        zenModeEnabled: true
-                    }
-                });
-
-                api.setActiveTool({ type: 'selection' });
-            }, 0);
-        }
-    }, [readonly]);
+     const getExcalidrawAPI = useCallback(excalidrawAPI => {
+            if (excalidrawAPIRef.current) {
+                return;
+            }
+            excalidrawAPIRef.current = excalidrawAPI;
+        }, []);
 
 
 
@@ -72,13 +62,17 @@ const WhiteboardWrapper = ({
                     collabDetails = { collabDetails }
                     collabServerUrl = { collabServerUrl }
                     detectScroll = { true }
+                    viewModeEnabled = { readonly}
+                    zenModeEnabled = { readonly}
                     excalidraw = {{
                         isCollaborating: true,
                         langCode: i18next.language,
-
+                        viewModeEnabled:  readonly,
+                        zenModeEnabled: readonly,
                         // @ts-ignore
                         ref: excalidrawRef,
                         theme: 'light',
+                      
                         UIOptions: readonly
                             ? {
                                 ...WHITEBOARD_UI_OPTIONS,
