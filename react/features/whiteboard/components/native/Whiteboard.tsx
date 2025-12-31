@@ -26,8 +26,6 @@ import logger from '../../logger';
 
 import WhiteboardErrorDialog from './WhiteboardErrorDialog';
 import styles, { INDICATOR_COLOR } from './styles';
-import { isLocalParticipantModerator } from '../../../base/participants/functions';
-
 
 interface IProps extends WithTranslation {
 
@@ -65,7 +63,7 @@ interface IProps extends WithTranslation {
  * Implements a React native component that displays the whiteboard page for a specific room.
  */
 class Whiteboard extends PureComponent<IProps> {
-private _webViewRef: WebView | null = null;
+
     /**
      * Initializes a new instance.
      *
@@ -130,7 +128,6 @@ private _webViewRef: WebView | null = null;
                 safeAreaInsets = { [ 'bottom', 'left', 'right' ] }
                 style = { styles.backDrop }>
                 <WebView
-                    ref={ref => (this._webViewRef = ref)}
                     domStorageEnabled = { false }
                     incognito = { true }
                     javaScriptEnabled = { true }
@@ -210,12 +207,6 @@ private _webViewRef: WebView | null = null;
                 collabServerUrl,
                 collabDetails
             });
-
-            // 🔑 SEND MODERATOR FLAG TO WEB
-            this._webViewRef?.postMessage(JSON.stringify({
-            type: 'WHITEBOARD_ROLE',
-            isModerator: isLocalParticipantModerator(this.props as any)
-        }));
         }
     }
 

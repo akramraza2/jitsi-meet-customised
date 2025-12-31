@@ -13,8 +13,7 @@ const WhiteboardWrapper = ({
     className,
     collabDetails,
     collabServerUrl,
-    localParticipantName,
-    isModerator
+    localParticipantName
 }: {
     className?: string;
     collabDetails: {
@@ -23,7 +22,6 @@ const WhiteboardWrapper = ({
     };
     collabServerUrl: string;
     localParticipantName: string;
-    isModerator: boolean;
 }) => {
     const excalidrawRef = useRef<any>(null);
     const excalidrawAPIRef = useRef<any>(null);
@@ -38,11 +36,6 @@ const WhiteboardWrapper = ({
 
     const getCollabAPI = useCallback(collabAPI => {
         if (collabAPIRef.current) {
-            return;
-        }
-        if (!isModerator) {
-            // 🚫 Students NEVER join collaboration
-            collabAPI.destroy?.();
             return;
         }
         collabAPIRef.current = collabAPI;
@@ -63,17 +56,7 @@ const WhiteboardWrapper = ({
                         // @ts-ignore
                         ref: excalidrawRef,
                         theme: 'light',
-                        // UIOptions: WHITEBOARD_UI_OPTIONS
-                        UIOptions: isModerator
-                            ? WHITEBOARD_UI_OPTIONS
-                            : {
-                                ...WHITEBOARD_UI_OPTIONS,
-                                canvasActions: {
-                                    clearCanvas: false,
-                                    export: false,
-                                    saveAsImage: false
-                                }
-                            }
+                        UIOptions: WHITEBOARD_UI_OPTIONS
                     }}
                     getCollabAPI = { getCollabAPI }
                     getExcalidrawAPI = { getExcalidrawAPI } />
