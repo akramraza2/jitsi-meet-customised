@@ -14,6 +14,7 @@ import { IconCloseLarge } from '../../../base/icons/svg';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import LoadingIndicator from '../../../base/react/components/native/LoadingIndicator';
 import { safeDecodeURIComponent } from '../../../base/util/uri';
+import { encodeToBase64URL, decodeFromBase64URL } from '../../../base/util/httpUtils';
 import HeaderNavigationButton
     from '../../../mobile/navigation/components/HeaderNavigationButton';
 import {
@@ -27,6 +28,8 @@ import logger from '../../logger';
 import WhiteboardErrorDialog from './WhiteboardErrorDialog';
 import styles, { INDICATOR_COLOR } from './styles';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
+import { WHITEBOARD_PATH_NAME } from '../../constants';
+
 
 interface IProps extends WithTranslation {
 
@@ -132,10 +135,9 @@ class Whiteboard extends PureComponent<IProps> {
         const finalUri = uri?.replace(
             /#state=([^&]+)/,
             (_, encodedState) => {
-                const decoded = JSON.parse(atob(encodedState));
+                const decoded = JSON.parse(decodeFromBase64URL(encodedState));
                 decoded.readonly = !isModerator;
-                const reEncoded = btoa(JSON.stringify(decoded));
-                return `#state=${reEncoded}`;
+                return `#state=${encodeToBase64URL(JSON.stringify(decoded))}`;
             }
         ) ?? '';
 
@@ -180,20 +182,26 @@ class Whiteboard extends PureComponent<IProps> {
      * @param {any} request - The request object.
      * @returns {boolean}
      */
-    _onNavigate(request: { url: string; }) {
-        const { url } = request;
-        const { locationHref, route } = this.props;
-        const collabServerUrl = route.params?.collabServerUrl;
-        const collabDetails = route.params?.collabDetails;
-        const localParticipantName = route.params?.localParticipantName;
+    // _onNavigate(request: { url: string; }) {
+    //     const { url } = request;
+    //     const { locationHref, route } = this.props;
+    //     const collabServerUrl = route.params?.collabServerUrl;
+    //     const collabDetails = route.params?.collabDetails;
+    //     const localParticipantName = route.params?.localParticipantName;
 
-        return url === getWhiteboardInfoForURIString(
-            locationHref,
-            collabServerUrl,
-            collabDetails,
-            localParticipantName
-        );
+    //     return url === getWhiteboardInfoForURIString(
+    //         locationHref,
+    //         collabServerUrl,
+    //         collabDetails,
+    //         localParticipantName
+    //     );
+    // }
+
+    _onNavigate(request: { url: string }) {
+    // return request.url.includes('/whiteboard');
+    return request.url.includes(`/${WHITEBOARD_PATH_NAME}`);
     }
+
 
     /**
      * Callback to handle the message events.

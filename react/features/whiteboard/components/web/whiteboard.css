@@ -1,0 +1,8 @@
+.whiteboard.readonly .excalidraw-wrapper {
+    pointer-events: none;
+}
+
+/* Optional: allow scroll while blocking draw */
+.whiteboard.readonly {
+    touch-action: pan-x pan-y;
+}

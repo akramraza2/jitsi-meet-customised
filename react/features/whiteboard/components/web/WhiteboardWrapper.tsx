@@ -3,6 +3,7 @@ import i18next from 'i18next';
 import React, { useCallback, useRef } from 'react';
 
 import { WHITEBOARD_UI_OPTIONS } from '../../constants';
+import './whiteboard.css';
 
 /**
  * Whiteboard wrapper for mobile.
@@ -59,7 +60,8 @@ const WhiteboardWrapper = ({
     }, [ localParticipantName ]);
 
     return (
-        <div className = { className }>
+        //<div className = { className }>
+        <div className={`${className} ${readonly ? 'readonly' : ''}`}>
             {readonly && (
             <div className="whiteboard-readonly-banner">
                 View only – mode for students
