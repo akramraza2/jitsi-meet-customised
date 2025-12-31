@@ -7,7 +7,7 @@
     touch-action: pan-x pan-y;
 }
 
-.whiteboard-readonly-banner {
+/* .whiteboard-readonly-banner {
     position: absolute;
     top: 12px;
     left: 50%;
@@ -18,4 +18,17 @@
     border-radius: 6px;
     font-size: 13px;
     z-index: 1000;
+} */
+
+.whiteboard-readonly-banner {
+    position: fixed;
+    top: 56px; /* below toolbar */
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: #000;
+    color: #fff;
+    text-align: center;
+    padding: 8px;
+    font-size: 14px;
 }

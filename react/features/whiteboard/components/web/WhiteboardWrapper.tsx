@@ -68,8 +68,6 @@ const WhiteboardWrapper = ({
                     excalidraw = {{
                         isCollaborating: true,
                         langCode: i18next.language,
-                        viewModeEnabled:  readonly,
-                        zenModeEnabled: readonly,
                         // @ts-ignore
                         ref: excalidrawRef,
                         theme: 'light',
