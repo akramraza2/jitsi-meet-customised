@@ -23,12 +23,24 @@ export default class WhiteboardApp extends BaseApp<any> {
      *
      * @returns {void}
      */
+    private isModerator = false;
+
     override async componentDidMount() {
         await super.componentDidMount();
 
+        // 🔑 Listen to native
+        window.addEventListener('message', event => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.type === 'WHITEBOARD_ROLE') {
+                    this.isModerator = data.isModerator;
+                }
+            } catch {}
+        });
+
         const { state } = parseURLParams(window.location.href, true);
         const decodedState = JSON.parse(decodeFromBase64URL(state));
-        const { collabServerUrl, localParticipantName,isReadOnly = false} = decodedState;
+        const { collabServerUrl, localParticipantName } = decodedState;
         let { roomId, roomKey } = decodedState;
 
         if (!roomId && !roomKey) {
@@ -62,9 +74,8 @@ export default class WhiteboardApp extends BaseApp<any> {
                                 roomKey
                             }}
                             collabServerUrl = { safeDecodeURIComponent(collabServerUrl) }
-                            localParticipantName = { localParticipantName }
-                            readonly = { isReadOnly }/>
-
+                            localParticipantName = { localParticipantName } 
+                            isModerator={ this.isModerator }/>
                         : <NoWhiteboardError className = 'whiteboard' />
                 }</>
             ) });

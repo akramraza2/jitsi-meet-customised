@@ -3,7 +3,6 @@ import i18next from 'i18next';
 import React, { useCallback, useRef } from 'react';
 
 import { WHITEBOARD_UI_OPTIONS } from '../../constants';
-import './whiteboard.css';
 
 /**
  * Whiteboard wrapper for mobile.
@@ -15,7 +14,7 @@ const WhiteboardWrapper = ({
     collabDetails,
     collabServerUrl,
     localParticipantName,
-    readonly
+    isModerator
 }: {
     className?: string;
     collabDetails: {
@@ -24,56 +23,50 @@ const WhiteboardWrapper = ({
     };
     collabServerUrl: string;
     localParticipantName: string;
-    readonly: boolean;
+    isModerator: boolean;
 }) => {
-    console.log('[WhiteboardWrapper] readonly =', readonly);
     const excalidrawRef = useRef<any>(null);
     const excalidrawAPIRef = useRef<any>(null);
     const collabAPIRef = useRef<any>(null);
 
-     const getExcalidrawAPI = useCallback(excalidrawAPI => {
-            if (excalidrawAPIRef.current) {
-                return;
-            }
-            excalidrawAPIRef.current = excalidrawAPI;
-        }, []);
-
-
+    const getExcalidrawAPI = useCallback(excalidrawAPI => {
+        if (excalidrawAPIRef.current) {
+            return;
+        }
+        excalidrawAPIRef.current = excalidrawAPI;
+    }, []);
 
     const getCollabAPI = useCallback(collabAPI => {
         if (collabAPIRef.current) {
+            return;
+        }
+        if (!isModerator) {
+            // 🚫 Students NEVER join collaboration
+            collabAPI.destroy?.();
             return;
         }
         collabAPIRef.current = collabAPI;
         collabAPIRef.current.setUsername(localParticipantName);
     }, [ localParticipantName ]);
 
-
     return (
-        //<div className = { className }>
-        <div className={`${className} ${readonly ? 'readonly' : ''}`}>
-            {readonly && (
-            <div className="whiteboard-readonly-banner">
-                View only – mode for students
-            </div>
-         )}
-
+        <div className = { className }>
             <div className = 'excalidraw-wrapper'>
                 <ExcalidrawApp
                     collabDetails = { collabDetails }
                     collabServerUrl = { collabServerUrl }
                     detectScroll = { true }
-                    viewModeEnabled = { readonly}
-                    zenModeEnabled = { readonly}
                     excalidraw = {{
                         isCollaborating: true,
                         langCode: i18next.language,
+
                         // @ts-ignore
                         ref: excalidrawRef,
                         theme: 'light',
-                      
-                        UIOptions: readonly
-                            ? {
+                        // UIOptions: WHITEBOARD_UI_OPTIONS
+                        UIOptions: isModerator
+                            ? WHITEBOARD_UI_OPTIONS
+                            : {
                                 ...WHITEBOARD_UI_OPTIONS,
                                 canvasActions: {
                                     clearCanvas: false,
@@ -81,7 +74,6 @@ const WhiteboardWrapper = ({
                                     saveAsImage: false
                                 }
                             }
-                            : WHITEBOARD_UI_OPTIONS
                     }}
                     getCollabAPI = { getCollabAPI }
                     getExcalidrawAPI = { getExcalidrawAPI } />

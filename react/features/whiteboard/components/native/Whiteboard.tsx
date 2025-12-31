@@ -14,7 +14,6 @@ import { IconCloseLarge } from '../../../base/icons/svg';
 import JitsiScreen from '../../../base/modal/components/JitsiScreen';
 import LoadingIndicator from '../../../base/react/components/native/LoadingIndicator';
 import { safeDecodeURIComponent } from '../../../base/util/uri';
-import { encodeToBase64URL, decodeFromBase64URL } from '../../../base/util/httpUtils';
 import HeaderNavigationButton
     from '../../../mobile/navigation/components/HeaderNavigationButton';
 import {
@@ -28,7 +27,6 @@ import logger from '../../logger';
 import WhiteboardErrorDialog from './WhiteboardErrorDialog';
 import styles, { INDICATOR_COLOR } from './styles';
 import { isLocalParticipantModerator } from '../../../base/participants/functions';
-import { WHITEBOARD_PATH_NAME } from '../../constants';
 
 
 interface IProps extends WithTranslation {
@@ -49,11 +47,6 @@ interface IProps extends WithTranslation {
     locationHref: string;
 
     /**
-     * Local Participant Moderator.
-     */
-    isModerator: boolean;
-
-    /**
      * Default prop for navigating between screen components(React Navigation).
      */
     navigation: any;
@@ -72,7 +65,7 @@ interface IProps extends WithTranslation {
  * Implements a React native component that displays the whiteboard page for a specific room.
  */
 class Whiteboard extends PureComponent<IProps> {
-
+private _webViewRef: WebView | null = null;
     /**
      * Initializes a new instance.
      *
@@ -121,7 +114,7 @@ class Whiteboard extends PureComponent<IProps> {
      * @inheritdoc
      */
     override render() {
-        const { locationHref, route, isModerator } = this.props;
+        const { locationHref, route } = this.props;
         const collabServerUrl = safeDecodeURIComponent(route.params?.collabServerUrl);
         const localParticipantName = safeDecodeURIComponent(route.params?.localParticipantName);
         const collabDetails = route.params?.collabDetails;
@@ -130,27 +123,14 @@ class Whiteboard extends PureComponent<IProps> {
             collabServerUrl,
             collabDetails,
             localParticipantName
-        );
-
-        const finalUri = uri?.replace(
-            /#state=([^&]+)/,
-            (_, encodedState) => {
-                const decoded = JSON.parse(decodeFromBase64URL(encodedState));
-
-                return `#state=${encodeToBase64URL(JSON.stringify({
-                    ...decoded,
-                    readonly: !isModerator
-                }))}`;
-            }
         ) ?? '';
-
-
 
         return (
             <JitsiScreen
                 safeAreaInsets = { [ 'bottom', 'left', 'right' ] }
                 style = { styles.backDrop }>
                 <WebView
+                    ref={ref => (this._webViewRef = ref)}
                     domStorageEnabled = { false }
                     incognito = { true }
                     javaScriptEnabled = { true }
@@ -161,8 +141,7 @@ class Whiteboard extends PureComponent<IProps> {
                     renderLoading = { this._renderLoading }
                     scrollEnabled = { true }
                     setSupportMultipleWindows = { false }
-                    // source = {{ uri }}
-                    source={{ uri: finalUri }}
+                    source = {{ uri }}
                     startInLoadingState = { true }
                     style = { styles.webView }
                     webviewDebuggingEnabled = { true } />
@@ -187,26 +166,20 @@ class Whiteboard extends PureComponent<IProps> {
      * @param {any} request - The request object.
      * @returns {boolean}
      */
-    // _onNavigate(request: { url: string; }) {
-    //     const { url } = request;
-    //     const { locationHref, route } = this.props;
-    //     const collabServerUrl = route.params?.collabServerUrl;
-    //     const collabDetails = route.params?.collabDetails;
-    //     const localParticipantName = route.params?.localParticipantName;
+    _onNavigate(request: { url: string; }) {
+        const { url } = request;
+        const { locationHref, route } = this.props;
+        const collabServerUrl = route.params?.collabServerUrl;
+        const collabDetails = route.params?.collabDetails;
+        const localParticipantName = route.params?.localParticipantName;
 
-    //     return url === getWhiteboardInfoForURIString(
-    //         locationHref,
-    //         collabServerUrl,
-    //         collabDetails,
-    //         localParticipantName
-    //     );
-    // }
-
-    _onNavigate(request: { url: string }) {
-    // return request.url.includes('/whiteboard');
-    return request.url.includes(`/${WHITEBOARD_PATH_NAME}`);
+        return url === getWhiteboardInfoForURIString(
+            locationHref,
+            collabServerUrl,
+            collabDetails,
+            localParticipantName
+        );
     }
-
 
     /**
      * Callback to handle the message events.
@@ -237,6 +210,12 @@ class Whiteboard extends PureComponent<IProps> {
                 collabServerUrl,
                 collabDetails
             });
+
+            // 🔑 SEND MODERATOR FLAG TO WEB
+            this._webViewRef?.postMessage(JSON.stringify({
+            type: 'WHITEBOARD_ROLE',
+            isModerator: isLocalParticipantModerator(this.props as any)
+        }));
         }
     }
 
@@ -270,8 +249,7 @@ function mapStateToProps(state: IReduxState) {
 
     return {
         conference: getCurrentConference(state),
-        locationHref: href,
-        isModerator: isLocalParticipantModerator(state)
+        locationHref: href
     };
 }
 
