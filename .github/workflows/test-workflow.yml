@@ -1,0 +1,12 @@
+name: TEST workflow trigger
+
+on:
+  push:
+    branches:
+      - alamaan-custom-sdk
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow triggered!"
