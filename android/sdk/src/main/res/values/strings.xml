@@ -4,8 +4,8 @@
     <string name="media_projection_notification_title">Al Amaan OIS</string>
     <string name="media_projection_notification_text">You are currently sharing your screen.</string>
     <string name="ongoing_notification_title">Ongoing live class</string>
-    <string name="ongoing_notification_text">You are currently in a classroom. Tap to return to it.</string>
-    <string name="ongoing_notification_action_hang_up">Hang up</string>
+    <string name="ongoing_notification_text">You are currently in a live class. Tap to return to it.</string>
+    <string name="ongoing_notification_action_hang_up">Leave</string>
     <string name="ongoing_notification_action_mute">Mute</string>
     <string name="ongoing_notification_action_unmute">Unmute</string>
     <string name="ongoing_notification_channel_name">Ongoing Live Class Notifications</string>
