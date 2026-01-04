@@ -1,0 +1,42 @@
+name: Auto-merge Maven artifacts to master
+
+on:
+  push:
+    branches:
+      - alamaan-custom-sdk
+      - android-sdk-custom
+
+jobs:
+  merge-to-master:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if Maven artifacts changed
+        id: maven_check
+        run: |
+          git fetch origin master
+          CHANGED_FILES=$(git diff --name-only origin/master...HEAD)
+
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          if echo "$CHANGED_FILES" | grep -q "^jitsi-maven-repository/"; then
+            echo "maven_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "maven_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Merge into master
+        if: steps.maven_check.outputs.maven_changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout master
+          git merge --no-ff "$GITHUB_REF_NAME" -m "Auto-merge Maven artifacts from $GITHUB_REF_NAME"
+          git push origin master
