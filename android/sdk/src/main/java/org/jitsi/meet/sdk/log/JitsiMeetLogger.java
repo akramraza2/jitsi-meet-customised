@@ -17,6 +17,7 @@
 package org.jitsi.meet.sdk.log;
 
 import timber.log.Timber;
+import org.jitsi.meet.sdk.BuildConfig;
 
 public class JitsiMeetLogger {
     static {
@@ -24,7 +25,7 @@ public class JitsiMeetLogger {
     }
 
     public static void addHandler(JitsiMeetBaseLogHandler handler) {
-        if (!Timber.forest().contains(handler)) {
+        if (!Timber.forest().contains(handler) && BuildConfig.DEBUG) {
             try {
                 Timber.plant(handler);
             } catch (Throwable t) {

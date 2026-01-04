@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
  * logs using the Android util.Log module.
  */
 public class JitsiMeetDefaultLogHandler extends JitsiMeetBaseLogHandler {
-    private static final String TAG = "JitsiMeetSDK";
+    private static final String TAG = "LiveClassesSDK";
 
     @Override
     protected void doLog(int priority, @NotNull String tag, @NotNull String msg) {

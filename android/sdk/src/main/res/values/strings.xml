@@ -3,7 +3,7 @@
     <string name="dropbox_app_key"></string>
     <string name="media_projection_notification_title">Al Amaan OIS</string>
     <string name="media_projection_notification_text">You are sharing your screen.</string>
-    <string name="ongoing_notification_title">Ongoing live class</string>
+    <string name="ongoing_notification_title">Ongoing Live Class</string>
     <string name="ongoing_notification_text">You are in a live class. Tap to return to it.</string>
     <string name="ongoing_notification_action_hang_up">Leave</string>
     <string name="ongoing_notification_action_mute">Mute</string>
