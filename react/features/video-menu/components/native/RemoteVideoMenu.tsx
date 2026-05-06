@@ -193,7 +193,6 @@ class RemoteVideoMenu extends PureComponent<IProps> {
                 <PinButton { ...buttonProps } />
                 { _showDemote && <DemoteToVisitorButton { ...buttonProps } /> }
                 { _enablePrivateChat && <PrivateMessageButton { ...buttonProps } /> }
-                {/* <ConnectionStatusButton { ...connectionStatusButtonProps } /> */}
                 {_moderator && _rooms.length > 1 && <>
                     {/* @ts-ignore */}
                     <Divider style = { styles.divider as ViewStyle } />
