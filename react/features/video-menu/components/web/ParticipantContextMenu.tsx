@@ -286,9 +286,9 @@ const ParticipantContextMenu = ({
         buttons2.push(<PrivateMessageMenuButton { ...getButtonProps(BUTTONS.PRIVATE_MESSAGE) } />);
     }
 
-    if (thumbnailMenu && isMobileBrowser()) {
-        buttons2.push(<ConnectionStatusButton { ...getButtonProps(BUTTONS.CONN_STATUS) } />);
-    }
+    // if (thumbnailMenu && isMobileBrowser()) {
+    //     buttons2.push(<ConnectionStatusButton { ...getButtonProps(BUTTONS.CONN_STATUS) } />);
+    // }
 
     if (thumbnailMenu && remoteControlState) {
         const onRemoteControlToggle = useCallback(() => {
