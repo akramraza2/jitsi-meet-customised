@@ -9,6 +9,8 @@ import org.jitsi.meet.sdk.log.JitsiMeetLogger;
 
 import java.util.HashMap;
 
+import 
+
 /**
  * Wraps the name and extra data for the events that occur on the JS side and are
  * to be broadcasted.
@@ -49,6 +51,13 @@ public class BroadcastEvent {
                     JitsiMeetLogger.w(TAG + " invalid extra data in event", e);
                 }
             }
+            
+            if (type == Type.CONFERENCE_TERMINATED) {
+            intent.putExtra(
+                "duration",
+                String.valueOf(OngoingNotification.getElapsedTime())
+            );
+        }
 
             return intent;
         }

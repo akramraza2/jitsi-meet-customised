@@ -113,6 +113,14 @@ class OngoingNotification {
         startingTime = 0;
     }
 
+    static long getElapsedTime() {
+    if (startingTime == 0) {
+        return 0;
+    }
+
+    return System.currentTimeMillis() - startingTime;
+}
+
     private static NotificationCompat.Action createAction(Context context, JitsiMeetOngoingConferenceService.Action action, @StringRes int titleId) {
         Intent intent = new Intent(context, JitsiMeetOngoingConferenceService.class);
         intent.setAction(action.getName());
