@@ -115,6 +115,8 @@ const RECORDING_STATUS_CHANGED = 'RECORDING_STATUS_CHANGED';
 const externalAPIEnabled = isExternalAPIAvailable();
 
 let eventEmitter: any;
+let conferenceStartTimestamp = 0;
+
 
 const { ExternalAPI } = NativeModules;
 
@@ -167,6 +169,7 @@ externalAPIEnabled && MiddlewareRegistry.register(store => next => action => {
         break;
 
     case CONFERENCE_JOINED:
+        conferenceStartTimestamp = getConferenceTimestamp(store.getState()) ?? Date.now();
         _sendConferenceEvent(store, action);
         _registerForEndpointTextMessages(store);
         break;
@@ -202,13 +205,9 @@ externalAPIEnabled && MiddlewareRegistry.register(store => next => action => {
             // This action will arrive late, so the locationURL stored on the state is no longer valid.
             const locationURL = connection[JITSI_CONNECTION_URL_KEY];
 
-            const state = store.getState();
-
-            const startTimestamp = getConferenceTimestamp(state);
-
-            const duration = startTimestamp
-                ? Date.now() - startTimestamp
-                : 0;
+            const duration = conferenceStartTimestamp
+            ? Date.now() - conferenceStartTimestamp
+            : 0;
 
             sendEvent(
                 store,
@@ -217,6 +216,7 @@ externalAPIEnabled && MiddlewareRegistry.register(store => next => action => {
                     url: _normalizeUrl(locationURL),
                     duration
                 });
+                conferenceStartTimestamp = 0;
         }
 
         break;
