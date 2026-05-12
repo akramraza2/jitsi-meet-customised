@@ -7,9 +7,7 @@ import com.facebook.react.bridge.ReadableMap;
 
 import org.jitsi.meet.sdk.log.JitsiMeetLogger;
 
-import java.util.HashMap;
-
-import 
+import java.util.HashMap; 
 
 /**
  * Wraps the name and extra data for the events that occur on the JS side and are
