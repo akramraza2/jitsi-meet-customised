@@ -9,6 +9,8 @@ import { getConferenceTimestamp }from '../../base/conference/functions';
 
 const CONFERENCE_TERMINATED = 'CONFERENCE_TERMINATED';
 
+let lastConferenceDuration = 0;
+
 /**
  * Sends a specific event to the native counterpart of the External API. Native
  * apps may listen to such events via the mechanisms provided by the (native)
@@ -31,7 +33,11 @@ export function sendEvent(store: Object, name: string, data: Object) {
 
             const conferenceDuration = startTimestamp
                 ? Date.now() - startTimestamp
-                : 0;
+                : lastConferenceDuration;
+
+            if (conferenceDuration > 0) {
+                lastConferenceDuration = conferenceDuration;
+            }
 
             data = {
                 ...data,
