@@ -70,6 +70,7 @@ import { isExternalAPIAvailable } from '../react-native-sdk/functions';
 import { READY_TO_CLOSE } from './actionTypes';
 import { setParticipantsWithScreenShare } from './actions';
 import { participantToParticipantInfo, sendEvent } from './functions';
+import { getConferenceTimestamp }from '../../base/conference/functions';
 import logger from './logger';
 
 /**
@@ -201,11 +202,20 @@ externalAPIEnabled && MiddlewareRegistry.register(store => next => action => {
             // This action will arrive late, so the locationURL stored on the state is no longer valid.
             const locationURL = connection[JITSI_CONNECTION_URL_KEY];
 
+            const state = store.getState();
+
+            const startTimestamp = getConferenceTimestamp(state);
+
+            const duration = startTimestamp
+                ? Date.now() - startTimestamp
+                : 0;
+
             sendEvent(
                 store,
                 CONFERENCE_TERMINATED,
-                /* data */ {
-                    url: _normalizeUrl(locationURL)
+                {
+                    url: _normalizeUrl(locationURL),
+                    duration
                 });
         }
 
