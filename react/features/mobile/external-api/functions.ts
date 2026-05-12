@@ -5,6 +5,9 @@ import { IParticipant } from '../../base/participants/types';
 
 import { readyToClose } from './actions';
 
+import { getConferenceTimestamp }from '../../base/conference/functions';
+
+const CONFERENCE_TERMINATED = 'CONFERENCE_TERMINATED';
 
 /**
  * Sends a specific event to the native counterpart of the External API. Native
@@ -18,6 +21,24 @@ import { readyToClose } from './actions';
  * @returns {void}
  */
 export function sendEvent(store: Object, name: string, data: Object) {
+
+        if (name === CONFERENCE_TERMINATED) {
+
+        const state = (store as any).getState();
+
+        const startTimestamp =
+            getConferenceTimestamp(state);
+
+        const conferenceDuration = startTimestamp
+            ? Date.now() - startTimestamp
+            : 0;
+
+        data = {
+            ...data,
+            conferenceDuration
+        };
+    }
+
     NativeModules.ExternalAPI.sendEvent(name, data);
 }
 
