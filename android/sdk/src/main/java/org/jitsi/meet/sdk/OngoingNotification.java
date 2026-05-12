@@ -39,6 +39,7 @@ class OngoingNotification {
     private static final String TAG = OngoingNotification.class.getSimpleName();
 
     private static long startingTime = 0;
+    private static long lastElapsedTime = 0;
 
     static final String ONGOING_CONFERENCE_CHANNEL_ID = "JitsiOngoingConferenceChannel";
 
@@ -110,16 +111,23 @@ class OngoingNotification {
     }
 
     static void resetStartingtime() {
+
+        if (startingTime != 0) {
+            lastElapsedTime =
+                System.currentTimeMillis() - startingTime;
+        }
+
         startingTime = 0;
     }
 
     static long getElapsedTime() {
-    if (startingTime == 0) {
-        return 0;
-    }
 
-    return System.currentTimeMillis() - startingTime;
-}
+        if (startingTime != 0) {
+            return System.currentTimeMillis() - startingTime;
+        }
+
+        return lastElapsedTime;
+    }
 
     private static NotificationCompat.Action createAction(Context context, JitsiMeetOngoingConferenceService.Action action, @StringRes int titleId) {
         Intent intent = new Intent(context, JitsiMeetOngoingConferenceService.class);

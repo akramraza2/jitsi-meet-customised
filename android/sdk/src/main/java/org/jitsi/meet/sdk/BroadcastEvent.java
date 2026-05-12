@@ -55,8 +55,8 @@ public class BroadcastEvent {
                 intent.putExtra(
                     "duration",
                     String.valueOf(OngoingNotification.getElapsedTime())
-            );
-        }
+                );
+            }
 
             return intent;
         }
