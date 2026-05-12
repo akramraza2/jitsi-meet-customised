@@ -24,20 +24,20 @@ export function sendEvent(store: Object, name: string, data: Object) {
 
         if (name === CONFERENCE_TERMINATED) {
 
-        const state = (store as any).getState();
+            const state = (store as any).getState();
 
-        const startTimestamp =
-            getConferenceTimestamp(state);
+            const startTimestamp =
+                getConferenceTimestamp(state);
 
-        const conferenceDuration = startTimestamp
-            ? Date.now() - startTimestamp
-            : 0;
+            const conferenceDuration = startTimestamp
+                ? Date.now() - startTimestamp
+                : 0;
 
-        data = {
-            ...data,
-            conferenceDuration
-        };
-    }
+            data = {
+                ...data,
+                conferenceDuration
+            };
+        }
 
     NativeModules.ExternalAPI.sendEvent(name, data);
 }
