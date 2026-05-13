@@ -179,6 +179,10 @@ const ProfileView = ({ isInWelcomePage }: {
                             placeholder = { t('settingsView.displayNamePlaceholderText') }
                             textContentType = { 'name' }
                             value = { displayName ?? '' } />
+
+                        <Text style = { styles.gavatarMessageContainer }>
+                            If your Student ID is not displayed automatically, please enter your Student ID as your display name.
+                        </Text>
                     </FormSection>
 
                 </View>

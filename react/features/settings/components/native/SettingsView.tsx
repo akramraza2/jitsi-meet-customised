@@ -90,6 +90,10 @@ const SettingsView = ({ isInWelcomePage }: IProps) => {
                                         { displayName }
                                     </Text>
 
+                                    <Text style = { styles.gavatarMessageContainer }>
+                                        If your Student ID is not displayed automatically, tap to update it to your Student ID as your display name.
+                                    </Text>
+
                                     <Icon
                                         size = { 24 }
                                         src = { IconArrowRight }
