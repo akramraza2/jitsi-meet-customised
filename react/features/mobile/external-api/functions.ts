@@ -31,17 +31,17 @@ export function sendEvent(store: Object, name: string, data: Object) {
             const startTimestamp =
                 getConferenceTimestamp(state);
 
-            const conferenceDuration = startTimestamp
+            const totalClassDuration = startTimestamp
                 ? Date.now() - startTimestamp
                 : lastConferenceDuration;
 
-            if (conferenceDuration > 0) {
-                lastConferenceDuration = conferenceDuration;
+            if (totalClassDuration > 0) {
+                lastConferenceDuration = totalClassDuration;
             }
 
             data = {
                 ...data,
-                conferenceDuration
+                totalClassDuration
             };
         }
 

@@ -53,7 +53,7 @@ public class BroadcastEvent {
             if (type == Type.CONFERENCE_TERMINATED) {
                 JitsiMeetLogger.w(TAG + "Duration in CONFERENCE_TERMINATED EVENT", OngoingNotification.getElapsedTime());
                 intent.putExtra(
-                    "duration",
+                    "participantDuration",
                     String.valueOf(OngoingNotification.getElapsedTime())
                 );
             }

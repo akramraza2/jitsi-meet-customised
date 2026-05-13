@@ -40,7 +40,7 @@
         "speaker": "Speaker"
     },
     "audioOnly": {
-        "audioOnly": "Low bandwidth"
+        "audioOnly": "Audio Only"
     },
     "bandwidthSettings": {
         "assumedBandwidthBps": "e.g. 10000000 for 10 Mbps",
@@ -1045,7 +1045,7 @@
         "initiated": "Call initiated",
         "joinAudioByPhone": "Join with phone audio",
         "joinMeeting": "Join classroom",
-        "joinMeetingInLowBandwidthMode": "Join in low bandwidth mode",
+        "joinMeetingInLowBandwidthMode": "Join in audio only mode",
         "joinWithoutAudio": "Join without audio",
         "keyboardShortcuts": "Enable Keyboard shortcuts",
         "linkCopied": "Link copied to clipboard",
@@ -1245,7 +1245,7 @@
         "sdkVersion": "SDK version",
         "serverURL": "Server URL",
         "showAdvanced": "Show advanced settings",
-        "startCarModeInLowBandwidthMode": "Start car mode in low bandwidth mode",
+        "startCarModeInLowBandwidthMode": "Start car mode in audio only mode",
         "startWithAudioMuted": "Start with audio muted",
         "startWithVideoMuted": "Start with video muted",
         "terms": "Terms",
@@ -1399,8 +1399,8 @@
                 "label": "Stereo"
             }
         },
-        "audioOnlyOff": "Disable low bandwidth mode",
-        "audioOnlyOn": "Enable low bandwidth mode",
+        "audioOnlyOff": "Disable audio only mode",
+        "audioOnlyOn": "Enable audio only mode",
         "audioRoute": "Select the sound device",
         "audioSettings": "Audio settings",
         "authenticate": "Authenticate",
@@ -1533,7 +1533,7 @@
     "videoStatus": {
         "adjustFor": "Adjust for:",
         "audioOnly": "AUD",
-        "audioOnlyExpanded": "You are in low bandwidth mode. In this mode you will receive only audio and screen sharing.",
+        "audioOnlyExpanded": "You are in audio only mode. In this mode you will receive only audio and screen sharing.",
         "bestPerformance": "Best performance",
         "callQuality": "Video Quality (0 for best performance, 3 for highest quality)",
         "hd": "HD",
@@ -1541,7 +1541,7 @@
         "highDefinition": "High definition",
         "highestQuality": "Highest quality",
         "labelTooiltipNoVideo": "No video",
-        "labelTooltipAudioOnly": "Low bandwidth mode enabled",
+        "labelTooltipAudioOnly": "Audio only mode enabled",
         "ld": "LD",
         "ldTooltip": "Viewing low definition video",
         "lowDefinition": "Low definition",
