@@ -57,9 +57,7 @@ const SettingsView = ({ isInWelcomePage }: IProps) => {
             style = { styles.settingsViewContainer }>
             <ScrollView bounces = { scrollBounces }>
                 <View style = { styles.profileContainerWrapper as ViewStyle }>
-                    <TouchableHighlight
-
-                        /* eslint-disable react/jsx-no-bind */
+                    {/* <TouchableHighlight
                         onPress = { () => navigate(screen.settings.profile) }>
                         <View
                             style = { styles.profileContainer as ViewStyle }>
@@ -74,7 +72,46 @@ const SettingsView = ({ isInWelcomePage }: IProps) => {
                                 src = { IconArrowRight }
                                 style = { styles.profileViewArrow } />
                         </View>
-                    </TouchableHighlight>
+                    </TouchableHighlight> */}
+                    {displayName === 'Al Amaan Student'
+                        ? (
+                            <TouchableHighlight
+
+                                /* eslint-disable react/jsx-no-bind */
+                                onPress = { () => navigate(screen.settings.profile) }>
+
+                                <View style = { styles.profileContainer as ViewStyle }>
+
+                                    <Avatar
+                                        participantId = { localParticipantId }
+                                        size = { AVATAR_SIZE } />
+
+                                    <Text style = { styles.displayName as TextStyle }>
+                                        { displayName }
+                                    </Text>
+
+                                    <Icon
+                                        size = { 24 }
+                                        src = { IconArrowRight }
+                                        style = { styles.profileViewArrow } />
+
+                                </View>
+                            </TouchableHighlight>
+                        )
+                        : (
+                            <View style = { styles.profileContainer as ViewStyle }>
+
+                                <Avatar
+                                    participantId = { localParticipantId }
+                                    size = { AVATAR_SIZE } />
+
+                                <Text style = { styles.displayName as TextStyle }>
+                                    { displayName }
+                                </Text>
+
+                            </View>
+                        )}
+
                 </View>
                 <GeneralSection />
                 { isInWelcomePage && <>
@@ -89,10 +126,10 @@ const SettingsView = ({ isInWelcomePage }: IProps) => {
                         <Divider style = { styles.fieldSeparator as ViewStyle } />
                         <ModeratorSection />
                     </> }
-                <Divider style = { styles.fieldSeparator as ViewStyle } />
+                {/* <Divider style = { styles.fieldSeparator as ViewStyle } />
                 <AdvancedSection />
                 <Divider style = { styles.fieldSeparator as ViewStyle } />
-                <LinksSection />
+                <LinksSection /> */}
             </ScrollView>
         </JitsiScreen>
     );

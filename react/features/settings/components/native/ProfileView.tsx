@@ -111,52 +111,87 @@ const ProfileView = ({ isInWelcomePage }: {
         });
     }, [ navigation ]);
 
+    // return (
+    //     <JitsiScreen
+    //         disableForcedKeyboardDismiss = { true }
+    //         hasBottomTextInput = { true }
+    //         safeAreaInsets = { [ !isInWelcomePage && 'bottom', 'left', 'right' ].filter(Boolean) as Edge[] }
+    //         style = { styles.settingsViewContainer }>
+    //         <ScrollView
+    //             bounces = { isInWelcomePage }
+    //             contentContainerStyle = { styles.profileView as ViewStyle }>
+    //             <View>
+    //                 <View style = { styles.avatarContainer as ViewStyle }>
+    //                     <Avatar
+    //                         participantId = { participant?.id }
+    //                         size = { AVATAR_SIZE } />
+    //                 </View>
+    //                 <FormSection>
+    //                     <Input
+    //                         customStyles = {{ container: styles.customContainer }}
+    //                         label = { t('settingsView.displayName') }
+    //                         onChange = { onDisplayNameChanged }
+    //                         placeholder = { t('settingsView.displayNamePlaceholderText') }
+    //                         textContentType = { 'name' } // iOS only
+    //                         value = { displayName ?? '' } />
+    //                     <Input
+    //                         autoCapitalize = 'none'
+    //                         customStyles = {{ container: styles.customContainer }}
+    //                         keyboardType = { 'email-address' }
+    //                         label = { t('settingsView.email') }
+    //                         onChange = { onEmailChanged }
+    //                         placeholder = { t('settingsView.emailPlaceholderText') }
+    //                         textContentType = { 'emailAddress' } // iOS only
+    //                         value = { email ?? '' } />
+    //                     <Text style = { styles.gavatarMessageContainer }>
+    //                         { t('settingsView.gavatarMessage') }
+    //                     </Text>
+    //                 </FormSection>
+    //             </View>
+    //             <Button
+    //                 accessibilityLabel = { t('settingsView.apply') }
+    //                 labelKey = { 'settingsView.apply' }
+    //                 onClick = { onApplySettings }
+    //                 style = { styles.applyProfileSettingsButton }
+    //                 type = { BUTTON_TYPES.PRIMARY } />
+    //         </ScrollView>
+    //     </JitsiScreen>
+
+    // );
     return (
         <JitsiScreen
             disableForcedKeyboardDismiss = { true }
             hasBottomTextInput = { true }
             safeAreaInsets = { [ !isInWelcomePage && 'bottom', 'left', 'right' ].filter(Boolean) as Edge[] }
             style = { styles.settingsViewContainer }>
+
             <ScrollView
                 bounces = { isInWelcomePage }
                 contentContainerStyle = { styles.profileView as ViewStyle }>
+
                 <View>
-                    <View style = { styles.avatarContainer as ViewStyle }>
-                        <Avatar
-                            participantId = { participant?.id }
-                            size = { AVATAR_SIZE } />
-                    </View>
+
                     <FormSection>
                         <Input
                             customStyles = {{ container: styles.customContainer }}
                             label = { t('settingsView.displayName') }
                             onChange = { onDisplayNameChanged }
                             placeholder = { t('settingsView.displayNamePlaceholderText') }
-                            textContentType = { 'name' } // iOS only
+                            textContentType = { 'name' }
                             value = { displayName ?? '' } />
-                        <Input
-                            autoCapitalize = 'none'
-                            customStyles = {{ container: styles.customContainer }}
-                            keyboardType = { 'email-address' }
-                            label = { t('settingsView.email') }
-                            onChange = { onEmailChanged }
-                            placeholder = { t('settingsView.emailPlaceholderText') }
-                            textContentType = { 'emailAddress' } // iOS only
-                            value = { email ?? '' } />
-                        <Text style = { styles.gavatarMessageContainer }>
-                            { t('settingsView.gavatarMessage') }
-                        </Text>
                     </FormSection>
+
                 </View>
+
                 <Button
                     accessibilityLabel = { t('settingsView.apply') }
                     labelKey = { 'settingsView.apply' }
                     onClick = { onApplySettings }
                     style = { styles.applyProfileSettingsButton }
                     type = { BUTTON_TYPES.PRIMARY } />
+
             </ScrollView>
         </JitsiScreen>
-
     );
 };
 
